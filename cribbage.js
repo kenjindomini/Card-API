@@ -1,4 +1,4 @@
-function Cribbage(numberOfPlayers) {
+function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
     this.players = {};
     this.groups = {};
     if (numberOfPlayers < 2) {
