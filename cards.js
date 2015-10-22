@@ -4,7 +4,7 @@ function Deck() {
 }
 
 Deck.prototype = {
-    deal: function deal(number) {
+    deal: function deal(numberPerPlayer, numberOfPlayers) {
     
     }
 };
