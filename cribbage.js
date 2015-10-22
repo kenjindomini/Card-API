@@ -3,6 +3,10 @@ function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
     this.groups = {}; //Object properties ID, array Players
     this.dealer = "";
     this.deck = [];
+    this.round = 0;
+    this.phase = 1; //1 = count to 31, 2 = score
+    this.victory = 121;
+    this.skunk = 90;
     if (numberOfPlayers < 2) {
         throw "Too few players";
     }
