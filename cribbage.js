@@ -1,8 +1,10 @@
+var Deck = require('cards.js');
+
 function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
     this.players = {}; //Object properties name, score
     this.groups = {}; //Object properties ID, array Players
     this.dealer = "";
-    this.deck = [];
+    this.deck = new Deck();
     this.round = 0;
     this.phase = 1; //1 = count to 31, 2 = score
     this.victory = 121;
