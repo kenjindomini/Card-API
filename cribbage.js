@@ -88,3 +88,6 @@ Cribbage.prototype = {
         return {"value": cardValue, "suit": suit, "card": card};
     }
 };
+
+//Export module for use in other files.
+module.exports = Cribbage;
