@@ -8,7 +8,7 @@ function Deck(maxPlayers, minPlayers = 1, deckSize = 52, lowestCard = 1, cardDup
   this.cardDuplicates = 0;
   this.max = this.deckSize;
   this.min = this.lowestCard;
-  while (this.deck.length < 52) {
+  while (this.deck.length < this.deckSize) {
     var nextCard = Math.floor(Math.random() *
     (this.max - this.min + 1) + this.min);
     if (nextCard == this.min) {
@@ -45,3 +45,6 @@ Deck.prototype = {
       return value;
     }
 };
+
+//Export Deck contructor, so it can be loaded to another file using require()
+module.exports = Deck;
