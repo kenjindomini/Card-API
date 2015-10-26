@@ -3,6 +3,7 @@ var Deck = require('cards.js');
 function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
     this.players = {}; //Object properties name, score, hand(array)
     this.groups = {}; //Object properties ID, array Players
+    this.kitty = []; //store kitty.
     this.dealer = ""; //Who is the dealer, maybe track this as bool in players.
     this.deck = new Deck(6, 2); //Generate a new deck.
     this.round = 0;
@@ -47,7 +48,13 @@ Cribbage.prototype = {
         //TODO check if the player scores pair/trips/quads, run, 15, 31.
     },
     throwCard: function (player, card) {
-        
+        var cardIndex = this.players[player].hand.indexOf(card);
+        if (cardIndex != -1) {
+         this.players[player].hand.splice(cardIndex, 1);
+         this.kitty.push(card);
+        } else {
+            throw "Card not found in hand";
+        }
     },
     cut: function (player, cutDepth, forDeal = false) {
         
