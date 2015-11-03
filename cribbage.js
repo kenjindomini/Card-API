@@ -1,7 +1,7 @@
 var Deck = require('cards.js');
 
-function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
-    this.players = {}; //Object properties name, score, hand(array)
+function Cribbage(_players, teamPlayWith4Players = true) {
+    this.players = _players; //Object properties name, score, hand(array)
     this.groups = {}; //Object properties ID, array Players
     this.kitty = []; //store kitty.
     this.dealer = ""; //Who is the dealer, maybe track this as bool in players.
@@ -13,24 +13,48 @@ function Cribbage(numberOfPlayers, teamPlayWith4Players = true) {
     this.cutCard = {}; // Card object.
     this.victory = 121;
     this.skunk = 90;
-    if (numberOfPlayers < 2) {
+    this.numberOfPlayers = this.players.length;
+    if (this.numberOfPlayers < 2) {
         throw "Too few players";
     }
-    if (numberOfPlayers > 6) {
+    if (this.numberOfPlayers > 6) {
         throw "Too many players";
     }
-    //TODO: Populate players or group object.
+    //TODO: group object.
 }
 
 Cribbage.prototype = {
-    scoreHand: function (hand, centerCard) {
-        
+    scoreHand: function (_hand) {
+        var score = 0;
+        var hand = [];
+        for (var card in _hand) {
+            hand.push(this.getCard(card));
+        }
+        //is this the best solution?
+        for (var x = 0; x == hand.length; x++) {
+            for (var y = x+1; y > hand.length; y++) {
+                var count = hand[x] + hand[y];
+                if (count == 15) {
+                    score += 2;
+                    break;
+                }
+                else if (count < 15) {
+                    for (var z = x+2; z > hand.length; z++) {
+                        //TODO: complete score calculations.
+                    }
+                }
+            }
+        }
     },
     playCard: function (player, card) {
         if(this.phase != 1) {
             throw "Wrong phase";
         }
-        //TODO: if card is undefined count as GO.
+        //if card is undefined count as GO.
+        if(typeof card === 'undefined' || card < 0 || card > 52) {
+            //TODO: do we need to track the GO?
+            return;
+        }
         //check card is a valid play
         //Must be in hand and not put the count over 31.
         var _card = this.getCard(card);
@@ -46,6 +70,10 @@ Cribbage.prototype = {
             throw "Card not found in hand";
         }
         //TODO check if the player scores pair/trips/quads, run, 15, 31.
+        if (this.count = 31) {
+            this.players[player].score += 2;
+        }
+        this.scoreHand(this.countCards);
     },
     throwCard: function (player, card) {
         var cardIndex = this.players[player].hand.indexOf(card);
