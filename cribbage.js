@@ -24,34 +24,37 @@ function Cribbage(_players, teamPlayWith4Players = true) {
 }
 
 Cribbage.prototype = {
-    scoreHand: function (_hand) {
+    scoreHand: function(_hand) {
         var score = 0;
         var hand = [];
         for (var card in _hand) {
             hand.push(this.getCard(card));
         }
-        //is this the best solution?
-        for (var x = 0; x == hand.length; x++) {
-            for (var y = x+1; y > hand.length; y++) {
-                var count = hand[x] + hand[y];
-                if (count == 15) {
-                    score += 2;
-                    break;
+        //TODO: make this recursive function self sufficient
+        var check15 = function() {
+            function recursive(base, nextIndex) {
+                if (nextIndex > hand.length - 1) {
+                    return 0;
                 }
-                else if (count < 15) {
-                    for (var z = x+2; z > hand.length; z++) {
-                        //TODO: complete score calculations.
-                    }
+                var total = base + hand[nextIndex].cardValue;
+                if (total == 15) {
+                    return 2;
                 }
+                else if (total < 15) {
+                    recursive(total, nextIndex + 1);
+                }
+                return 0;
             }
-        }
+            return recursive;
+        };
+        //TODO: add checks for other points.
     },
-    playCard: function (player, card) {
-        if(this.phase != 1) {
+    playCard: function(player, card) {
+        if (this.phase != 1) {
             throw "Wrong phase";
         }
         //if card is undefined count as GO.
-        if(typeof card === 'undefined' || card < 0 || card > 52) {
+        if (typeof card === 'undefined' || card < 0 || card > 52) {
             //TODO: do we need to track the GO?
             return;
         }
@@ -63,10 +66,11 @@ Cribbage.prototype = {
         }
         var cardIndex = this.players[player].hand.indexOf(card);
         if (cardIndex != -1) {
-         this.players[player].hand.splice(cardIndex, 1);
-         this.countCards.push(_card);
-         this.count += _card.value;
-        } else {
+            this.players[player].hand.splice(cardIndex, 1);
+            this.countCards.push(_card);
+            this.count += _card.value;
+        }
+        else {
             throw "Card not found in hand";
         }
         //TODO check if the player scores pair/trips/quads, run, 15, 31.
@@ -75,19 +79,20 @@ Cribbage.prototype = {
         }
         this.scoreHand(this.countCards);
     },
-    throwCard: function (player, card) {
+    throwCard: function(player, card) {
         var cardIndex = this.players[player].hand.indexOf(card);
         if (cardIndex != -1) {
-         this.players[player].hand.splice(cardIndex, 1);
-         this.kitty.push(card);
-        } else {
+            this.players[player].hand.splice(cardIndex, 1);
+            this.kitty.push(card);
+        }
+        else {
             throw "Card not found in hand";
         }
     },
-    cut: function (player, cutDepth, forDeal = false) {
-        
+    cut: function(player, cutDepth, forDeal = false) {
+
     },
-    getCard: function (_card) {
+    getCard: function(_card) {
         var suit = 1;
         var cardValue = _card;
         var card;
@@ -96,31 +101,40 @@ Cribbage.prototype = {
             suit++;
         }
         switch (cardValue) {
-            case 1: {
-                card = "Ace";
-                break;
-            }
-            case 11: {
-                card = "Jack";
-                cardValue = 10;
-                break;
-            }
-            case 12: {
-                card = "Queen";
-                cardValue = 10;
-                break;
-            }
-            case 13: {
-                card = "King";
-                cardValue = 10;
-                break;
-            }
-            default: {
-                card = cardValue;
-                break;
-            }
+            case 1:
+                {
+                    card = "Ace";
+                    break;
+                }
+            case 11:
+                {
+                    card = "Jack";
+                    cardValue = 10;
+                    break;
+                }
+            case 12:
+                {
+                    card = "Queen";
+                    cardValue = 10;
+                    break;
+                }
+            case 13:
+                {
+                    card = "King";
+                    cardValue = 10;
+                    break;
+                }
+            default:
+                {
+                    card = cardValue;
+                    break;
+                }
         }
-        return {"value": cardValue, "suit": suit, "card": card};
+        return {
+            "value": cardValue,
+            "suit": suit,
+            "card": card
+        };
     }
 };
 
