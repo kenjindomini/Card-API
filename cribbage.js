@@ -27,8 +27,12 @@ Cribbage.prototype = {
     scoreHand: function(_hand) {
         var score = 0;
         var hand = [];
-        for (var card in _hand) {
-            hand.push(this.getCard(card));
+        //Retrieves the hand already sorted.
+        for (var i = 1; i <= 13; i++) {
+            for (var card in _hand) {
+                if (_hand.value_ == i)
+                    hand.push(this.getCard(card));
+            }
         }
         //TODO: make this recursive function self sufficient
         var check15 = function() {
@@ -46,6 +50,19 @@ Cribbage.prototype = {
                 return 0;
             }
             return recursive;
+        };
+        var checkRun = function() {
+        };
+        var checkPairs = function() {
+            var points = 0
+            for (var card1 in hand) {
+                for (var card2 in hand) {
+                    if (hand.indexOf(card1) == hand.indexOf(card2))
+                        break;
+                    if (card1.value_ == card2.value_)
+                        points++;
+                }
+            }
         };
         //TODO: add checks for other points.
     },
@@ -74,7 +91,7 @@ Cribbage.prototype = {
             throw "Card not found in hand";
         }
         //TODO check if the player scores pair/trips/quads, run, 15, 31.
-        if (this.count = 31) {
+        if (this.count == 31) {
             this.players[player].score += 2;
         }
         this.scoreHand(this.countCards);
